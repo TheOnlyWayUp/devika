@@ -26,6 +26,14 @@ class Config:
     def get_bing_api_key(self):
         return environ.get("BING_API_KEY", self.config["API_KEYS"]["BING"])
 
+    def get_openai_api_endpoint(self):
+        return environ.get(
+            "OPENAI_API_BASE", self.config["API_ENDPOINTS"]["OPENAI"]
+        )  # ! OpenAI uses this natively. https://github.com/openai/openai-python/issues/745#issuecomment-1879978244
+
+    def get_openai_api_key(self):
+        return environ.get("OPENAI_API_KEY", self.config["API_KEYS"]["OPENAI"])
+
     def get_ollama_api_endpoint(self):
         return environ.get(
             "OLLAMA_HOST", self.config["API_ENDPOINTS"]["OLLAMA"]
@@ -33,9 +41,6 @@ class Config:
 
     def get_claude_api_key(self):
         return environ.get("CLAUDE_API_KEY", self.config["API_KEYS"]["CLAUDE"])
-
-    def get_openai_api_key(self):
-        return environ.get("OPENAI_API_KEY", self.config["API_KEYS"]["OPENAI"])
 
     def get_gemini_api_key(self):
         return environ.get("GEMINI_API_KEY", self.config["API_KEYS"]["GEMINI"])
