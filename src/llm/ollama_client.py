@@ -1,6 +1,7 @@
 import ollama
 from src.logger import Logger
 from src.config import Config
+from src.exceptions import ServerNotRunning
 
 log = Logger()
 
@@ -18,9 +19,15 @@ class Ollama:
             )
 
     def list_models(self) -> list[dict]:
+        if self.client is None:
+            raise ServerNotRunning("Ollama not available.")
+
         models = self.client.list()["models"]
         return models
 
     def inference(self, model_id: str, prompt: str) -> str:
+        if self.client is None:
+            raise ServerNotRunning("Ollama not available.")
+
         response = self.client.generate(model=model_id, prompt=prompt.strip())
         return response["response"]
