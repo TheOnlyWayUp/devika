@@ -26,6 +26,11 @@ class Config:
     def get_bing_api_key(self):
         return environ.get("BING_API_KEY", self.config["API_KEYS"]["BING"])
 
+    def get_ollama_api_endpoint(self):
+        return environ.get(
+            "OLLAMA_HOST", self.config["API_ENDPOINTS"]["OLLAMA"]
+        )  # ! Ollama uses this natively. https://github.com/ollama/ollama-python/blob/fcdf5771f5c91eca8200d37141bd31949da47dfd/ollama/_client.py#L55, Thanks @joecryptotoo
+
     def get_claude_api_key(self):
         return environ.get("CLAUDE_API_KEY", self.config["API_KEYS"]["CLAUDE"])
 
@@ -65,6 +70,10 @@ class Config:
 
     def set_bing_api_endpoint(self, endpoint):
         self.config["API_ENDPOINTS"]["BING"] = endpoint
+        self.save_config()
+
+    def set_ollama_api_endpoint(self, endpoint):
+        self.config["API_ENDPOINTS"]["OLLAMA"] = endpoint
         self.save_config()
 
     def set_claude_api_key(self, key):
