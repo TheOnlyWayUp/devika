@@ -12,36 +12,36 @@ class Config:
         return cls._instance
 
     def __init__(self):
-        self.config = toml.load("config.toml")
+        self.config = toml.load("sample.config.toml")
 
     def get_config(self):
         return self.config
 
-    def get_bing_api_key(self):
-        return environ.get("BING_API_KEY", self.config["API_KEYS"]["BING"])
-
-    def get_bing_api_endpoint(self):
-        return environ.get("BING_API_ENDPOINT", self.config["API_ENDPOINTS"]["BING"])
-
-    def get_ollama_api_endpoint(self):
+    def get_google_api_endpoint(self):
         return environ.get(
-            "OLLAMA_API_ENDPOINT", self.config["API_ENDPOINTS"]["OLLAMA"]
+            "GOOGLE_API_ENDPOINT", self.config["API_ENDPOINTS"]["GOOGLE"]
         )
 
+    def get_google_api_key(self):
+        return environ.get("GOOGLE_API_KEY", self.config["API_KEYS"]["GOOGLE"])
+
+    def get_google_cx(self):
+        return environ.get("GOOGLE_CX_API_KEY", self.config["API_KEYS"]["GOOGLE_CX"])
+
+    def get_bing_api_endpoint(self):
+        return self.config["API_ENDPOINTS"]["BING"]
+
     def get_claude_api_key(self):
-        return environ.get("CLAUDE_API_KEY", self.config["API_KEYS"]["CLAUDE"])
+        return self.config["API_KEYS"]["CLAUDE"]
 
     def get_openai_api_key(self):
-        return environ.get("OPENAI_API_KEY", self.config["API_KEYS"]["OPENAI"])
+        return self.config["API_KEYS"]["OPENAI"]
 
     def get_netlify_api_key(self):
-        return environ.get("NETLIFY_API_KEY", self.config["API_KEYS"]["NETLIFY"])
-    
-    def get_groq_api_key(self):
-        return environ.get("GROQ_API_KEY", self.config["API_KEYS"]["GROQ"])
-      
+        return self.config["API_KEYS"]["NETLIFY"]
+
     def get_sqlite_db(self):
-        return environ.get("SQLITE_DB_PATH", self.config["STORAGE"]["SQLITE_DB"])
+        return self.config["STORAGE"]["SQLITE_DB"]
 
     def get_screenshots_dir(self):
         return environ.get("SCREENSHOTS_DIR", self.config["STORAGE"]["SCREENSHOTS_DIR"])

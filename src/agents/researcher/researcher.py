@@ -8,6 +8,7 @@ from src.browser.search import BingSearch
 
 PROMPT = open("src/agents/researcher/prompt.jinja2").read().strip()
 
+
 class Researcher:
     def __init__(self, base_model: str):
         self.bing_search = BingSearch()
@@ -17,37 +18,36 @@ class Researcher:
         env = Environment(loader=BaseLoader())
         template = env.from_string(PROMPT)
         return template.render(
-            step_by_step_plan=step_by_step_plan,
-            contextual_keywords=contextual_keywords
+            step_by_step_plan=step_by_step_plan, contextual_keywords=contextual_keywords
         )
 
-    def validate_response(self, response: str):
+    def validate_response(self, response: str) -> dict or bool:
         response = response.strip().replace("```json", "```")
-        
+
         if response.startswith("```") and response.endswith("```"):
             response = response[3:-3].strip()
-
         try:
             response = json.loads(response)
         except Exception as _:
             return False
-        
+
         response = {k.replace("\\", ""): v for k, v in response.items()}
-        
+
         if "queries" not in response and "ask_user" not in response:
             return False
         else:
-            return {
-                "queries": response["queries"],
-                "ask_user": response["ask_user"]
-            }
+            return {"queries": response["queries"], "ask_user": response["ask_user"]}
 
-    def execute(self, step_by_step_plan: str, contextual_keywords: List[str], project_name: str) -> str:
-        contextual_keywords = ", ".join(map(lambda k: k.capitalize(), contextual_keywords))
+    def execute(
+        self, step_by_step_plan: str, contextual_keywords: List[str], project_name: str
+    ) -> dict | bool:
+        contextual_keywords = ", ".join(
+            map(lambda k: k.capitalize(), contextual_keywords)
+        )
         step_by_step_plan = self.render(step_by_step_plan, contextual_keywords)
-        
+
         response = self.llm.inference(step_by_step_plan, project_name)
-        
+
         valid_response = self.validate_response(response)
 
         while not valid_response:

@@ -3,25 +3,36 @@ from ollama import Client
 from src.config import Config
 
 from src.logger import Logger
+from src.config import Config
+from src.exceptions import ServerNotRunning
+
+log = Logger()
 
 client = Client(host=Config().get_ollama_api_endpoint())
 
 
 class Ollama:
-    @staticmethod
-    def list_models():
+    def __init__(self):
         try:
-            return client.list()["models"]
-        except httpx.ConnectError:
-            Logger().warning(
-                "Ollama server not running, please start the server to use models from Ollama."
+            self.client = ollama.Client(host=Config().get_ollama_api_endpoint())
+            log.info("Ollama available")
+        except:
+            self.client = None
+            log.warning("Ollama not available")
+            log.warning(
+                "run ollama server to use ollama models otherwise use other models"
             )
-        except Exception as e:
-            Logger().error(f"Failed to list Ollama models: {e}")
 
-        return []
+    def list_models(self) -> list[dict]:
+        if self.client is None:
+            raise ServerNotRunning("Ollama not available.")
+
+        models = self.client.list()["models"]
+        return models
 
     def inference(self, model_id: str, prompt: str) -> str:
-        response = client.generate(model=model_id, prompt=prompt.strip())
+        if self.client is None:
+            raise ServerNotRunning("Ollama not available.")
 
+        response = self.client.generate(model=model_id, prompt=prompt.strip())
         return response["response"]
