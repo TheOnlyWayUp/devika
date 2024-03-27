@@ -1,4 +1,5 @@
 import toml
+from os import environ
 
 
 class Config:
@@ -9,52 +10,54 @@ class Config:
         return self.config
 
     def get_google_api_endpoint(self):
-        return self.config["API_ENDPOINTS"]["GOOGLE"]
+        return environ.get(
+            "GOOGLE_API_ENDPOINT", self.config["API_ENDPOINTS"]["GOOGLE"]
+        )
 
     def get_google_api_key(self):
-        return self.config["API_KEYS"]["GOOGLE"]
+        return environ.get("GOOGLE_API_KEY", self.config["API_KEYS"]["GOOGLE"])
 
     def get_google_cx(self):
-        return self.config["API_KEYS"]["GOOGLE_CX"]
+        return environ.get("GOOGLE_CX_API_KEY", self.config["API_KEYS"]["GOOGLE_CX"])
 
     def get_bing_api_endpoint(self):
-        return self.config["API_ENDPOINTS"]["BING"]
+        return environ.get("BING_API_ENDPOINT", self.config["API_ENDPOINTS"]["BING"])
 
     def get_bing_api_key(self):
-        return self.config["API_KEYS"]["BING"]
+        return environ.get("BING_API_KEY", self.config["API_KEYS"]["BING"])
 
     def get_claude_api_key(self):
-        return self.config["API_KEYS"]["CLAUDE"]
+        return environ.get("CLAUDE_API_KEY", self.config["API_KEYS"]["CLAUDE"])
 
     def get_openai_api_key(self):
-        return self.config["API_KEYS"]["OPENAI"]
+        return environ.get("OPENAI_API_KEY", self.config["API_KEYS"]["OPENAI"])
 
     def get_gemini_api_key(self):
-        return self.config["API_KEYS"]["GEMINI"]
+        return environ.get("GEMINI_API_KEY", self.config["API_KEYS"]["GEMINI"])
 
     def get_mistral_api_key(self):
-        return self.config["API_KEYS"]["MISTRAL"]
+        return environ.get("MISTRAL_API_KEY", self.config["API_KEYS"]["MISTRAL"])
 
     def get_netlify_api_key(self):
-        return self.config["API_KEYS"]["NETLIFY"]
+        return environ.get("NETLIFY_API_KEY", self.config["API_KEYS"]["NETLIFY"])
 
     def get_sqlite_db(self):
-        return self.config["STORAGE"]["SQLITE_DB"]
+        return environ.get("SQLITE_DB", self.config["STORAGE"]["SQLITE_DB"])
 
     def get_screenshots_dir(self):
-        return self.config["STORAGE"]["SCREENSHOTS_DIR"]
+        return environ.get("SCREENSHOTS_DIR", self.config["STORAGE"]["SCREENSHOTS_DIR"])
 
     def get_pdfs_dir(self):
-        return self.config["STORAGE"]["PDFS_DIR"]
+        return environ.get("PDFS_DIR", self.config["STORAGE"]["PDFS_DIR"])
 
     def get_projects_dir(self):
-        return self.config["STORAGE"]["PROJECTS_DIR"]
+        return environ.get("PROJECTS_DIR", self.config["STORAGE"]["PROJECTS_DIR"])
 
     def get_logs_dir(self):
-        return self.config["STORAGE"]["LOGS_DIR"]
+        return environ.get("LOGS_DIR", self.config["STORAGE"]["LOGS_DIR"])
 
     def get_repos_dir(self):
-        return self.config["STORAGE"]["REPOS_DIR"]
+        return environ.get("REPOS_DIR", self.config["STORAGE"]["REPOS_DIR"])
 
     def set_bing_api_key(self, key):
         self.config["API_KEYS"]["BING"] = key
