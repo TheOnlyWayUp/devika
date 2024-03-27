@@ -10,7 +10,7 @@
   });
 
   const save = async () => {
-    await updateSettings({"API_KEYS": settings["API_KEYS"]});
+    await updateSettings({ API_KEYS: settings["API_KEYS"] });
     editMode = !editMode;
   };
 
@@ -28,13 +28,16 @@
         <div class="flex flex-col gap-4">
           {#each Object.entries(settings["API_KEYS"]) as [key, value]}
             <div class="flex gap-3 items-center">
-              <p class="w-20">{key}</p>
+              <label class="w-20" for={key}>{key}</label>
               <input
                 type="text"
-                bind:value={settings["API_KEYS"][key]}
                 name={key}
-                class="w-1/3 p-2 border-2 rounded-lg {editMode ? '' : 'bg-gray-100 text-gray-500'}"
-                readonly={!editMode}
+                bind:value={settings["API_KEYS"][key]}
+                class="w-1/3 p-2 border-2 rounded-lg"
+                class:bg-gray-100={!editMode}
+                class:text-gray-500={!editMode}
+                class:disabled={!editMode}
+                disabled={!editMode}
               />
             </div>
           {/each}
